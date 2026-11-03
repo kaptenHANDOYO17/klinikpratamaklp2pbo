@@ -1,0 +1,11 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "files.encoding": "utf8",
+    "files.exclude": {
+        "bin": true,
+        "out": true
+    }
+}

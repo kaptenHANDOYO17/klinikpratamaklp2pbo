@@ -1,0 +1,93 @@
+classDiagram
+    direction TB
+    class Entitas {
+        <<interface>>
+        +getId() String
+        +tampilkanInfo() String
+    }
+    class Orang {
+        <<abstract>>
+        -id : String
+        -nama : String
+        -noTelp : String
+        -alamat : String
+        +getPeran()* String
+        +tampilkanInfo()* String
+        #infoDasar() String
+    }
+    class Pasien {
+        -nik : String
+        -tanggalLahir : LocalDate
+        -jenisKelamin : String
+        -jenisPasien : JenisPasien
+        -noBpjs : String
+        +getUmur() int
+        +tampilkanInfo() String
+    }
+    class Dokter {
+        -poli : Poli
+        -noSip : String
+        -aktif : boolean
+        +tampilkanInfo() String
+    }
+    class Petugas {
+        -jabatan : String
+        -username : String
+        -password : String
+        +cocokLogin(u, p) boolean
+        +tampilkanInfo() String
+    }
+    class Pemeriksaan {
+        <<abstract>>
+        -id : String
+        -pasien : Pasien
+        -dokter : Dokter
+        -tanggal : LocalDate
+        -keluhan : String
+        -diagnosa : String
+        -biayaObat : double
+        -caraBayar : JenisPasien
+        +hitungBiaya()* double
+        +getNamaLayanan()* String
+        +getPoliLayanan()* Poli
+        +tampilkanInfo() String
+    }
+    class PemeriksaanUmum {
+        +TARIF_KONSULTASI = 50000
+        +hitungBiaya() double
+    }
+    class PemeriksaanGigi {
+        +TARIF_KONSULTASI = 100000
+        -tindakan : TindakanGigi
+        +hitungBiaya() double
+    }
+    class JenisPasien {
+        <<enumeration>>
+        BPJS
+        UMUM
+    }
+    class Poli {
+        <<enumeration>>
+        UMUM
+        GIGI
+    }
+    class TindakanGigi {
+        <<enumeration>>
+        KONSULTASI
+        TAMBAL
+        CABUT
+        SCALING
+        BLEACHING
+    }
+    Entitas <|.. Orang
+    Entitas <|.. Pemeriksaan
+    Orang <|-- Pasien
+    Orang <|-- Dokter
+    Orang <|-- Petugas
+    Pemeriksaan <|-- PemeriksaanUmum
+    Pemeriksaan <|-- PemeriksaanGigi
+    Pemeriksaan --> Pasien
+    Pemeriksaan --> Dokter
+    PemeriksaanGigi --> TindakanGigi
+    Pasien --> JenisPasien
+    Dokter --> Poli

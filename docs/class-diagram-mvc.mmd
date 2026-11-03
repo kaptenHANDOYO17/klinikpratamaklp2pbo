@@ -1,0 +1,59 @@
+classDiagram
+    direction LR
+    class Dao~T~ {
+        <<interface>>
+        +getAll() List~T~
+        +cariById(id) T
+        +tambah(T)
+        +ubah(T)
+        +hapus(id)
+        +buatIdBaru() String
+    }
+    class FileDao~T~ {
+        <<abstract>>
+        -data : Map~String,T~
+        +muat()
+        #keKolom(T)* String[]
+        #dariKolom(String[])* T
+    }
+    class PasienDao
+    class DokterDao
+    class PetugasDao
+    class PemeriksaanDao
+    class LoginController
+    class PasienController {
+        +cari(kata) List
+        +cari(kata, jenis) List
+    }
+    class DokterController
+    class PemeriksaanController
+    class BerandaController
+    class LoginFrame
+    class MainFrame
+    class PasienPanel
+    class DokterPanel
+    class PemeriksaanPanel
+    class BerandaPanel
+    class ValidasiException
+    class DataException
+    Dao <|.. FileDao
+    FileDao <|-- PasienDao
+    FileDao <|-- DokterDao
+    FileDao <|-- PetugasDao
+    FileDao <|-- PemeriksaanDao
+    LoginFrame --> LoginController
+    PasienPanel --> PasienController
+    DokterPanel --> DokterController
+    PemeriksaanPanel --> PemeriksaanController
+    BerandaPanel --> BerandaController
+    MainFrame o-- PasienPanel
+    MainFrame o-- DokterPanel
+    MainFrame o-- PemeriksaanPanel
+    MainFrame o-- BerandaPanel
+    LoginController --> PetugasDao
+    PasienController --> PasienDao
+    DokterController --> DokterDao
+    PemeriksaanController --> PemeriksaanDao
+    BerandaController --> PemeriksaanDao
+    PasienController ..> ValidasiException : throws
+    FileDao ..> DataException : throws

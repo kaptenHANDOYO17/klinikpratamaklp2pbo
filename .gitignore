@@ -1,0 +1,13 @@
+# hasil kompilasi
+bin/
+out/
+dist/
+*.class
+
+# data lokal (dibuat otomatis saat aplikasi pertama dijalankan)
+data/
+
+# file sistem / editor
+.DS_Store
+Thumbs.db
+*.log

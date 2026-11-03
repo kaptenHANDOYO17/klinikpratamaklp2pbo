@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Jalankan Aplikasi Klinik",
+            "request": "launch",
+            "mainClass": "klinik.App",
+            "projectName": "KlinikPratama",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "java",
+            "name": "Uji Konsol (tanpa GUI)",
+            "request": "launch",
+            "mainClass": "klinik.UjiKonsol",
+            "projectName": "KlinikPratama",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
