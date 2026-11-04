@@ -169,6 +169,7 @@ public class UjiKonsol {
         ujiEnkapsulasiPasien();
         ujiValidasiDokter(dokterC, pasienC);
         ujiPolimorfismeTindakanGigi(periksaC);
+        ujiPencarianDanOverloading(pasienC, dokterC, periksaC);
         hapusFolder(folderUji);
         System.out.println();
         System.out.println("==============================");
@@ -256,6 +257,26 @@ public class UjiKonsol {
                 periksaC.hitungEstimasi("RM001", "DR001", LocalDate.now(), "Demam", "", 50000, null) == 0);
         cekGagal("Biaya obat di atas Rp 10 juta ditolak",
                 () -> periksaC.hitungEstimasi("RM002", "DR001", LocalDate.now(), "Demam", "", 10_000_001, null));
+    }
+
+    /** 13. Pencarian (overloading cari) dan kasus batas CRUD. */
+    private static void ujiPencarianDanOverloading(PasienController pasienC, DokterController dokterC,
+                                                   PemeriksaanController periksaC) {
+        judul("13. Pencarian (overloading) dan kasus batas CRUD");
+        cek("Cari pasien lewat NIK menemukan Siti", pasienC.cari("3171024508950002").size() == 1);
+        cek("Cari 'BUDI' (huruf besar) tetap ketemu", pasienC.cari("BUDI").size() == 1);
+        cek("Cari 'zzz' tidak menemukan apa pun", pasienC.cari("zzz").isEmpty());
+        cek("Filter pasien Umum = 2 pasien", pasienC.cari("", JenisPasien.UMUM).size() == 2);
+        cek("Filter dokter Poli Umum = 2 dokter", dokterC.cari("", Poli.UMUM).size() == 2);
+        cek("Cari dokter 'drg' = 3 dokter gigi", dokterC.cari("drg").size() == 3);
+        cek("Cari dokter lewat No. SIP '446/201'", dokterC.cari("446/201").size() == 1);
+        cek("Cari pemeriksaan diagnosa 'karies'", periksaC.cari("karies").size() == 1);
+        cek("Filter pemeriksaan Poli Umum = 2 data", periksaC.cari("", Poli.UMUM).size() == 2);
+        cekGagal("Ubah pasien yang tidak ada ditolak", () -> pasienC.ubah("RM999", "Coba Saja",
+                "3171000000000001", LocalDate.of(2000, 1, 1), Pasien.LAKI_LAKI, "081200001111", "Jl. A",
+                JenisPasien.UMUM, ""));
+        cekGagal("Hapus pasien tanpa memilih (null) ditolak", () -> pasienC.hapus(null));
+        cekGagal("Hapus pemeriksaan yang tidak ada ditolak", () -> periksaC.hapus("PR999"));
     }
 
     // ===== Alat bantu uji sederhana =====
