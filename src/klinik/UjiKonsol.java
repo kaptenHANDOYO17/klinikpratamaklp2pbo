@@ -166,6 +166,7 @@ public class UjiKonsol {
         DokterDao dokterDao3 = new DokterDao(folder);
         cek("Baris rusak dilewati, 5 dokter tetap terbaca", dokterDao3.getAll().size() == 5);
 
+        ujiEnkapsulasiPasien();
         hapusFolder(folderUji);
         System.out.println();
         System.out.println("==============================");
@@ -176,6 +177,39 @@ public class UjiKonsol {
         }
     }
 
+        // ===== UJI TAMBAHAN ANGGOTA 2 =====
+
+    /** 10. Enkapsulasi: validasi di setter Pasien/Orang menolak data yang tidak valid. */
+    private static void ujiEnkapsulasiPasien() throws ValidasiException {
+        judul("10. Enkapsulasi: validasi setter Pasien");
+        LocalDate lahir = LocalDate.of(2000, 1, 1);
+        cekGagal("Nama 2 huruf ditolak", () -> new Pasien("RM900", "Al", "3171000000000001", lahir,
+                Pasien.LAKI_LAKI, "081200001111", "Jl. A", JenisPasien.UMUM, ""));
+        cekGagal("Nama hanya spasi ditolak", () -> new Pasien("RM900", "   ", "3171000000000001", lahir,
+                Pasien.LAKI_LAKI, "081200001111", "Jl. A", JenisPasien.UMUM, ""));
+        cekGagal("No. telp tidak diawali 08 ditolak", () -> new Pasien("RM900", "Coba Saja", "3171000000000001",
+                lahir, Pasien.LAKI_LAKI, "6281200001111", "Jl. A", JenisPasien.UMUM, ""));
+        cekGagal("No. telp 14 digit ditolak", () -> new Pasien("RM900", "Coba Saja", "3171000000000001",
+                lahir, Pasien.LAKI_LAKI, "08120000111122", "Jl. A", JenisPasien.UMUM, ""));
+        cekGagal("NIK berisi huruf ditolak", () -> new Pasien("RM900", "Coba Saja", "31710000000000AB",
+                lahir, Pasien.LAKI_LAKI, "081200001111", "Jl. A", JenisPasien.UMUM, ""));
+        cekGagal("No. BPJS 12 digit ditolak", () -> new Pasien("RM900", "Coba Saja", "3171000000000001",
+                lahir, Pasien.LAKI_LAKI, "081200001111", "Jl. A", JenisPasien.BPJS, "000123456789"));
+        cekGagal("Jenis kelamin kosong ditolak", () -> new Pasien("RM900", "Coba Saja", "3171000000000001",
+                lahir, null, "081200001111", "Jl. A", JenisPasien.UMUM, ""));
+        cekGagal("Tanggal lahir lebih dari 120 tahun lalu ditolak", () -> new Pasien("RM900", "Coba Saja",
+                "3171000000000001", LocalDate.now().minusYears(121), Pasien.LAKI_LAKI, "081200001111",
+                "Jl. A", JenisPasien.UMUM, ""));
+        cekGagal("Alamat kosong ditolak", () -> new Pasien("RM900", "Coba Saja", "3171000000000001",
+                lahir, Pasien.LAKI_LAKI, "081200001111", "", JenisPasien.UMUM, ""));
+
+        Pasien p = new Pasien("RM900", "  Coba Saja  ", "3171000000000001", lahir, Pasien.PEREMPUAN,
+                "081200001111", "Jl.   Mawar    No. 1", JenisPasien.BPJS, "0001112223334");
+        cek("Spasi di awal/akhir nama dibuang (trim)", p.getNama().equals("Coba Saja"));
+        cek("Spasi berlebih di alamat dirapikan", p.getAlamat().equals("Jl. Mawar No. 1"));
+        p.setJenisPasien(JenisPasien.UMUM);
+        cek("Ganti BPJS -> Umum, No. BPJS otomatis dikosongkan", p.getNoBpjs().isEmpty());
+    }
     // ===== Alat bantu uji sederhana =====
 
     interface AksiYangHarusGagal {
