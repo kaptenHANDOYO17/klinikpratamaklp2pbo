@@ -168,6 +168,7 @@ public class UjiKonsol {
 
         ujiEnkapsulasiPasien();
         ujiValidasiDokter(dokterC, pasienC);
+        ujiPolimorfismeTindakanGigi(periksaC);
         hapusFolder(folderUji);
         System.out.println();
         System.out.println("==============================");
@@ -232,6 +233,29 @@ public class UjiKonsol {
         cekGagal("Dokter Poli Umum dipakai untuk pemeriksaan gigi ditolak",
                 () -> new klinik.model.PemeriksaanGigi("PR900", siti, dokterUmum, LocalDate.now(),
                         "Sakit gigi", "", 0, JenisPasien.UMUM, TindakanGigi.CABUT));
+    }
+
+    /** 12. Polimorfisme: hitungBiaya() untuk SEMUA tindakan gigi, pasien Umum vs BPJS. */
+    private static void ujiPolimorfismeTindakanGigi(PemeriksaanController periksaC) throws ValidasiException {
+        judul("12. Polimorfisme hitungBiaya() semua tindakan gigi");
+        double obat = 20000;
+        for (TindakanGigi t : TindakanGigi.values()) {
+            // Pasien Umum (RM002) di Poli Gigi: konsultasi Rp 100.000 + tindakan + obat
+            double umum = periksaC.hitungEstimasi("RM002", "DR003", LocalDate.now(), "Sakit gigi", "", obat, t);
+            double harapanUmum = 100000 + t.getHarga() + obat;
+            cek("Umum + " + t + " = " + klinik.util.FormatUtil.rupiah(harapanUmum), umum == harapanUmum);
+
+            // Pasien BPJS (RM001): ditanggung (Rp 0) kecuali tindakan estetika
+            double bpjs = periksaC.hitungEstimasi("RM001", "DR003", LocalDate.now(), "Sakit gigi", "", obat, t);
+            double harapanBpjs = t.isDitanggungBpjs() ? 0 : t.getHarga();
+            cek("BPJS + " + t + " = " + klinik.util.FormatUtil.rupiah(harapanBpjs), bpjs == harapanBpjs);
+        }
+        cek("Poli Umum, pasien Umum, tanpa obat = Rp 50.000",
+                periksaC.hitungEstimasi("RM002", "DR001", LocalDate.now(), "Demam", "", 0, null) == 50000);
+        cek("Poli Umum, pasien BPJS, obat Rp 50.000 tetap Rp 0",
+                periksaC.hitungEstimasi("RM001", "DR001", LocalDate.now(), "Demam", "", 50000, null) == 0);
+        cekGagal("Biaya obat di atas Rp 10 juta ditolak",
+                () -> periksaC.hitungEstimasi("RM002", "DR001", LocalDate.now(), "Demam", "", 10_000_001, null));
     }
 
     // ===== Alat bantu uji sederhana =====
