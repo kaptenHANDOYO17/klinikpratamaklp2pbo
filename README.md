@@ -61,5 +61,5 @@ data/                     # dibuat otomatis saat aplikasi dijalankan (tidak di-u
 | Anggota | Bagian |
 |---|---|
 | Anggota 1 | Seluruh kode inti: model, DAO, controller, view, pengujian |
-| Anggota 2 | *(akan ditambahkan)* |
+| Thufail Bima Putra Raditya | Pengujian konsol (UjiKonsol bagian 10–13: enkapsulasi, validasi dokter, polimorfisme tindakan gigi, pencarian/overloading) |
 | Anggota 3 | *(akan ditambahkan)* |

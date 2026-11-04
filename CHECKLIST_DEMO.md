@@ -3,7 +3,7 @@
 ## A. Persiapan (H-1 dan 15 menit sebelum demo)
 
 - [ ] `2-jalankan-aplikasi.bat` sudah pernah dicoba di laptop yang dipakai demo (tidak ada error).
-- [ ] `3-uji-konsol.bat` hasilnya **45 LULUS, 0 GAGAL** (screenshot untuk cadangan).
+- [ ] `3-uji-konsol.bat` hasilnya **89 LULUS, 0 GAGAL** (screenshot untuk cadangan).
 - [ ] Jalankan `6-reset-data.bat` agar data kembali ke data contoh yang rapi.
 - [ ] Kode terbaru sudah di-push ke GitHub (`5-upload-github.bat`), buka halaman repo di browser.
 - [ ] Buka VS Code dengan file `Pasien.java`, `PemeriksaanGigi.java`, `BerandaController.java`, `FileDao.java` di tab, siap ditunjukkan.
@@ -52,7 +52,7 @@
 | try-catch file | `dao/FileDao.java` | `muat()` dan `simpanKeFile()` |
 | MVC | `view/PasienPanel.java` | View hanya memanggil `controller.tambah(...)` |
 | Event lambda | `view/PasienPanel.java` | `pasangEvent()` |
-| Uji konsol | jalankan `3-uji-konsol.bat` | 45 LULUS |
+| Uji konsol | jalankan `3-uji-konsol.bat` | 89 LULUS |
 
 ## D. Rencana cadangan
 

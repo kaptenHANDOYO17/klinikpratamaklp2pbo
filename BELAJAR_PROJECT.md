@@ -248,7 +248,7 @@ J: JTextField, JTextArea, JPasswordField, JComboBox, JRadioButton (jenis kelamin
 ## 11. Cara menjalankan & menguji
 
 - Aplikasi: `2-jalankan-aplikasi.bat` atau Run `App.java` di VS Code.
-- Uji konsol (bukti Progres 1, Minggu 2): `3-uji-konsol.bat` → hasilnya harus **45 LULUS, 0 GAGAL**.
+- Uji konsol (bukti Progres 1, Minggu 2): `3-uji-konsol.bat` → hasilnya harus **89 LULUS, 0 GAGAL**.
 - Reset data contoh: `6-reset-data.bat`.
 
 ## 12. Untuk anggota kelompok lain (dekorasi/tambahan)
