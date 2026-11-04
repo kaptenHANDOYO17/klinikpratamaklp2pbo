@@ -167,6 +167,7 @@ public class UjiKonsol {
         cek("Baris rusak dilewati, 5 dokter tetap terbaca", dokterDao3.getAll().size() == 5);
 
         ujiEnkapsulasiPasien();
+        ujiValidasiDokter(dokterC, pasienC);
         hapusFolder(folderUji);
         System.out.println();
         System.out.println("==============================");
@@ -210,6 +211,29 @@ public class UjiKonsol {
         p.setJenisPasien(JenisPasien.UMUM);
         cek("Ganti BPJS -> Umum, No. BPJS otomatis dikosongkan", p.getNoBpjs().isEmpty());
     }
+    /** 11. Validasi Dokter: No. SIP, poli, dan dokter yang salah poli. */
+    private static void ujiValidasiDokter(DokterController dokterC, PasienController pasienC)
+            throws ValidasiException {
+        judul("11. Validasi Dokter");
+        cekGagal("No. SIP 4 karakter ditolak", () -> new Dokter("DR900", "dr. Coba Saja", "081300009999",
+                "Jl. B", Poli.UMUM, "SIP1", true));
+        cekGagal("No. SIP berisi karakter # ditolak", () -> new Dokter("DR900", "dr. Coba Saja", "081300009999",
+                "Jl. B", Poli.UMUM, "SIP#446/2024", true));
+        cekGagal("Poli kosong ditolak", () -> new Dokter("DR900", "dr. Coba Saja", "081300009999",
+                "Jl. B", null, "SIP.446/900/2024", true));
+        cekGagal("No. SIP kembar beda huruf besar/kecil ditolak", () -> dokterC.tambah("dr. Coba Saja",
+                "081300009999", "Jl. B", Poli.UMUM, "sip.446/101/2024", true));
+        cekGagal("Ubah dokter yang tidak ada ditolak", () -> dokterC.ubah("DR999", "dr. Coba Saja",
+                "081300009999", "Jl. B", Poli.UMUM, "SIP.446/900/2024", true));
+        cekGagal("Hapus dokter tanpa memilih (null) ditolak", () -> dokterC.hapus(null));
+
+        Pasien siti = pasienC.getById("RM002");
+        Dokter dokterUmum = dokterC.getById("DR001");
+        cekGagal("Dokter Poli Umum dipakai untuk pemeriksaan gigi ditolak",
+                () -> new klinik.model.PemeriksaanGigi("PR900", siti, dokterUmum, LocalDate.now(),
+                        "Sakit gigi", "", 0, JenisPasien.UMUM, TindakanGigi.CABUT));
+    }
+
     // ===== Alat bantu uji sederhana =====
 
     interface AksiYangHarusGagal {
