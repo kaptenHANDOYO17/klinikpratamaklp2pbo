@@ -1,17 +1,9 @@
 # Klinik Pratama: Sistem Informasi Pelayanan Pasien
 
-Aplikasi desktop **Java Swing** untuk Tugas Proyek Pemrograman Berorientasi Objek (Implementasi GUI) 2026, tema **Klinik Pratama**.
+Aplikasi desktop **Java Swing** untuk Tugas Proyek PBO (Implementasi GUI) 2026, tema **Klinik Pratama**.
 Aplikasi menerapkan 4 pilar OOP, pola **MVC + DAO**, dan menyimpan data secara permanen di file teks.
 
 ![Beranda](docs/screenshots/beranda.png)
-
-## Kelompok
-
-| No | Nama | NIM | Bagian |
-|---|---|---|---|
-| 1 | Handoyo | 21120124120040 | Desain kelas, model, exception, DAO, controller, tampilan Swing, pengujian |
-| 2 | Thufail Bima Putra Raditya | 21120124130049 | *(dalam pengerjaan)* |
-| 3 | Mikail Hikam Altiyar | 21120124130102 | *(dalam pengerjaan)* |
 
 ## Fitur
 
@@ -26,46 +18,22 @@ Aplikasi menerapkan 4 pilar OOP, pola **MVC + DAO**, dan menyimpan data secara p
 | Pencarian & filter | Semua tabel bisa dicari langsung saat mengetik dan difilter |
 | Validasi | Pesan kesalahan yang jelas + konfirmasi sebelum hapus |
 
-## Kebutuhan
+## Cara menjalankan (Windows)
 
-- JDK 17 atau lebih baru (diuji dengan JDK 21)
-- Visual Studio Code + ekstensi **Extension Pack for Java** (atau Eclipse / IntelliJ)
+1. Klik dua kali `1-cek-instal-java.bat`: cek/instal JDK 21, Git, dan ekstensi Java VS Code.
+2. Klik dua kali `2-jalankan-aplikasi.bat`: kompilasi lalu jalankan aplikasi.
 
-## Menjalankan
+Lewat **VS Code**: buka folder ini, pasang *Extension Pack for Java*, buka `src/klinik/App.java`, lalu klik **Run**.
+Lewat **Eclipse**: *File → Import → Existing Projects into Workspace* → pilih folder ini.
 
-**Lewat VS Code:** buka folder proyek, tunggu ekstensi Java selesai memuat, lalu tekan `F5` dan pilih **Jalankan Aplikasi Klinik**.
-Konfigurasi **Uji Konsol (tanpa GUI)** menjalankan pengujian model, DAO, dan controller.
-
-**Lewat terminal** (dari folder proyek):
-
-```bash
-javac -encoding UTF-8 --release 17 -d out -sourcepath src src/klinik/App.java src/klinik/UjiKonsol.java
-java -cp out klinik.App          # aplikasi
-java -cp out klinik.UjiKonsol    # uji konsol
-```
-
-**Membuat file JAR:**
-
-```bash
-jar --create --file dist/KlinikPratama.jar --main-class klinik.App -C out .
-java -jar dist/KlinikPratama.jar
-```
-
-**Membuat aplikasi desktop Windows (`KlinikPratama.exe`, Java sudah dibundel):**
-
-```bash
-jpackage --type app-image --name KlinikPratama --app-version 1.0.0 --icon packaging/klinik.ico --input dist --main-jar KlinikPratama.jar --main-class klinik.App --java-options "-Dklinik.mode=terpasang" --add-modules java.desktop --dest build/aplikasi
-```
-
-Hasilnya ada di `build/aplikasi/KlinikPratama/KlinikPratama.exe`. Hapus folder `build` terlebih dahulu jika ingin membuat ulang.
-
-| Cara membuka | Lokasi data |
+| File | Fungsi |
 |---|---|
-| `KlinikPratama.exe` (aplikasi desktop) | `%APPDATA%\KlinikPratama\data` |
-| `java -jar dist/KlinikPratama.jar` | folder `data` di tempat perintah dijalankan |
-| VS Code / terminal | folder `data` di proyek |
-
-Lokasi data yang sedang dipakai tampil di menu **Bantuan → Tentang Aplikasi**. Hapus folder `data` untuk kembali ke data contoh.
+| `1-cek-instal-java.bat` | Cek & instal JDK, Git, ekstensi VS Code |
+| `2-jalankan-aplikasi.bat` | Kompilasi + jalankan aplikasi |
+| `3-uji-konsol.bat` | Uji model/DAO/controller lewat konsol (tanpa GUI) |
+| `4-buat-jar.bat` | Membuat `dist/KlinikPratama.jar` |
+| `5-upload-github.bat` | Commit dan push ke GitHub |
+| `6-reset-data.bat` | Mengembalikan data ke data contoh (sebelum demo) |
 
 ## Struktur proyek
 
@@ -80,7 +48,7 @@ src/klinik/
 ├── view/                 # LoginFrame, MainFrame, panel-panel, UiUtil, Tombol
 └── util/                 # FormatUtil (rupiah, tanggal)
 docs/                     # class diagram & screenshot
-packaging/                # ikon aplikasi desktop
+data/                     # dibuat otomatis saat aplikasi dijalankan (tidak di-upload)
 ```
 
 ## Class diagram
@@ -88,16 +56,10 @@ packaging/                # ikon aplikasi desktop
 ![Model](docs/class-diagram-model.png)
 ![MVC](docs/class-diagram-mvc.png)
 
-## Cara berkontribusi (anggota kelompok)
+## Tim
 
-```bash
-git clone https://github.com/kaptenHANDOYO17/klinikpratamaklp2pbo.git
-cd klinikpratamaklp2pbo
-# ubah kode, jalankan, pastikan tidak error
-git add .
-git commit -m "Menjelaskan perubahan yang dibuat"
-git pull
-git push
-```
-
-Setelah menambah fitur, perbarui kolom **Bagian** pada tabel Kelompok di atas.
+| Anggota | Bagian |
+|---|---|
+| Handoyo | Seluruh kode inti: model, DAO, controller, view, pengujian |
+| Thufail Bima Putra Raditya | Pengujian konsol (UjiKonsol bagian 10–13: enkapsulasi, validasi dokter, polimorfisme tindakan gigi, pencarian/overloading) |
+| Mikail Hikam Altiyar | Pengujian input pada Tab Pemeriksaan (input kurang, salah, kosong, dan data yang sama) + perbaikan bug data pemeriksaan yang dapat terduplikasi saat tombol Tambah ditekan setelah memilih baris tabel |

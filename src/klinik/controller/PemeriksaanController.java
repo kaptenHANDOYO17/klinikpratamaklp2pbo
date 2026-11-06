@@ -16,6 +16,7 @@ import klinik.model.PemeriksaanGigi;
 import klinik.model.PemeriksaanUmum;
 import klinik.model.Poli;
 import klinik.model.TindakanGigi;
+import klinik.util.FormatUtil;
 
 /** Controller Pemeriksaan: mengatur pendaftaran pemeriksaan dan perhitungan biaya. */
 public class PemeriksaanController {
@@ -73,6 +74,7 @@ public class PemeriksaanController {
         }
         Pemeriksaan baru = buatObjek(pemeriksaanDao.buatIdBaru(), pasien, dokter, tanggal, keluhan,
                 diagnosa, biayaObat, pasien.getJenisPasien(), tindakan);
+        cekBelumTerduplikasi(pasien, dokter, tanggal, null);
         pemeriksaanDao.tambah(baru);
         return baru;
     }
@@ -95,6 +97,7 @@ public class PemeriksaanController {
         JenisPasien caraBayar = lama.getPasien().getId().equals(pasien.getId())
                 ? lama.getCaraBayar() : pasien.getJenisPasien();
         Pemeriksaan baru = buatObjek(id, pasien, dokter, tanggal, keluhan, diagnosa, biayaObat, caraBayar, tindakan);
+        cekBelumTerduplikasi(pasien, dokter, tanggal, id);
         pemeriksaanDao.ubah(baru);
         return baru;
     }
@@ -118,6 +121,24 @@ public class PemeriksaanController {
     }
 
     // ===== Bantuan =====
+
+    /**
+     * Pemeriksaan dianggap duplikat jika pasien, dokter, dan tanggalnya sama dengan data yang sudah ada.
+     * idDikecualikan: ID data yang sedang diubah (null saat menambah), agar tidak dibandingkan dengan dirinya sendiri.
+     */
+    private void cekBelumTerduplikasi(Pasien pasien, Dokter dokter, LocalDate tanggal, String idDikecualikan)
+            throws ValidasiException {
+        for (Pemeriksaan p : pemeriksaanDao.getAll()) {
+            boolean sama = p.getPasien().getId().equals(pasien.getId())
+                    && p.getDokter().getId().equals(dokter.getId())
+                    && p.getTanggal().equals(tanggal);
+            if (sama && !p.getId().equals(idDikecualikan)) {
+                throw new ValidasiException("Data pemeriksaan yang sama sudah ada (" + p.getId() + "):\n"
+                        + "Pasien " + pasien.getNama() + " dengan " + dokter.getNama()
+                        + " pada tanggal " + FormatUtil.tanggal(tanggal) + ".");
+            }
+        }
+    }
 
     /** Memilih kelas anak yang tepat berdasarkan poli dokter. */
     private Pemeriksaan buatObjek(String id, Pasien pasien, Dokter dokter, LocalDate tanggal, String keluhan,
